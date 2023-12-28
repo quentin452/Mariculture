@@ -116,7 +116,7 @@ public class NEIFishProductHandler extends NEIBase {
     }
 
     @Override
-    public List<String> handleItemTooltip(GuiRecipe gui, ItemStack stack, List<String> currenttip, int id) {
+    public List<String> handleItemTooltip(GuiRecipe<?> gui, ItemStack stack, List<String> currenttip, int id) {
         if (stack != null) {
             CachedProductRecipe cache = (CachedProductRecipe) arecipes.get(id);
             if (cache != null) {

@@ -191,7 +191,7 @@ public class NEICrucibleRecipeHandler extends NEIBase {
     }
 
     @Override
-    public List<String> handleItemTooltip(GuiRecipe gui, ItemStack stack, List<String> currenttip, int id) {
+    public List<String> handleItemTooltip(GuiRecipe<?> gui, ItemStack stack, List<String> currenttip, int id) {
         if (stack != null) {
             CachedLiquifierRecipe cache = (CachedLiquifierRecipe) arecipes.get(id);
             RecipeSmelter recipe = cache.recipe;
@@ -235,7 +235,7 @@ public class NEICrucibleRecipeHandler extends NEIBase {
     }
 
     @Override
-    public List<String> handleTooltip(GuiRecipe gui, List<String> currenttip, int id) {
+    public List<String> handleTooltip(GuiRecipe<?> gui, List<String> currenttip, int id) {
         currenttip = super.handleTooltip(gui, currenttip, id);
 
         Point mouse = getMouse(getGuiWidth(gui), getGuiHeight(gui));

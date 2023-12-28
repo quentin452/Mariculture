@@ -104,7 +104,7 @@ public abstract class NEICastingRecipeHandler extends NEIBase {
     }
 
     @Override
-    public List<String> handleTooltip(GuiRecipe gui, List<String> currenttip, int id) {
+    public List<String> handleTooltip(GuiRecipe<?> gui, List<String> currenttip, int id) {
         currenttip = super.handleTooltip(gui, currenttip, id);
         Point mouse = getMouse(getGuiWidth(gui), getGuiHeight(gui));
         if (isOverItem(gui, id)) return currenttip;

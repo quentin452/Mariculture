@@ -80,7 +80,7 @@ public class PluginForestry extends Plugin {
         aquaBackpackT2 = BackpackManager.backpackInterface.addBackpack(backpack, EnumBackpackType.T2);
         GameRegistry.registerItem(aquaBackpackT1, "aquaBackpackT1");
         GameRegistry.registerItem(aquaBackpackT2, "aquaBackpackT2");
-        
+
         backpack.addValidItem(oyster);
         backpack.addValidItem(ink);
         backpack.addValidItem(pearls);
@@ -153,14 +153,12 @@ public class PluginForestry extends Plugin {
             }
         }
 
-        @Override
         public boolean isValidItem(EntityPlayer player, ItemStack itemstack) {
             for (ItemStack stack : items)
                 if (RecipeItem.equals(itemstack, stack)) return true;
             return false;
         }
 
-        @Override
         public String getName() {
             return MCTranslate.translate("aquabackpack");
         }

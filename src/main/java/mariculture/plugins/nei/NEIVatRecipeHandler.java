@@ -72,7 +72,7 @@ public class NEIVatRecipeHandler extends NEIBase {
             super.loadCraftingRecipes(outputId, results);
         }
     }
-    
+
     public boolean isEqual(FluidStack fluid1, FluidStack fluid2, FluidStack fluid3) {
         return areFluidsEqual(fluid1, fluid3) || areFluidsEqual(fluid2, fluid3);
     }
@@ -161,7 +161,7 @@ public class NEIVatRecipeHandler extends NEIBase {
     }
 
     @Override
-    public List<String> handleTooltip(GuiRecipe gui, List<String> currenttip, int id) {
+    public List<String> handleTooltip(GuiRecipe<?> gui, List<String> currenttip, int id) {
         currenttip = super.handleTooltip(gui, currenttip, id);
         Point mouse = getMouse(getGuiWidth(gui), getGuiHeight(gui));
         if (isOverItem(gui, id)) return currenttip;
