@@ -12,7 +12,10 @@ import mariculture.core.lib.RockMeta;
 import mariculture.core.tile.TileOyster;
 import mariculture.core.world.WorldGenOre;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.world.ChunkCache;
 import net.minecraft.world.World;
+import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.common.IWorldGenerator;
@@ -66,6 +69,11 @@ public class WorldGenHandler implements IWorldGenerator {
 
     // Generates Oysters in the Ocean
     public static void generateOyster(World world, Random random, int x, int z) {
+        Chunk chunk = world.getChunkFromChunkCoords(x >> 4, z >> 4);
+        if (!chunk.isChunkLoaded) {
+            return;
+        }
+
         if (WorldGen.OYSTER_ENABLED) {
             for (int j = 0; j < WorldGen.OYSTER_PER_CHUNK; j++) {
                 int chance = WorldGen.OYSTER_CHANCE;
@@ -73,14 +81,21 @@ public class WorldGenHandler implements IWorldGenerator {
                     int randMeta = random.nextInt(4);
                     int randX = x - 8 + random.nextInt(4);
                     int randZ = z - 8 + random.nextInt(4);
-                    int blockY = world.getTopSolidOrLiquidBlock(randX, randZ);
-                    if (MaricultureHandlers.environment.getSalinity(world, randX, randZ) == Salinity.SALINE) if (Core.water.canBlockStay(world, randX, blockY, randZ)) if (BlockHelper.isWater(world, randX, blockY + 1, randZ)) {
-                        world.setBlock(randX, blockY, randZ, Core.water);
-                        TileOyster oyster = (TileOyster) world.getTileEntity(randX, blockY, randZ);
-                        if (oyster != null) {
-                            oyster.orientation = ForgeDirection.values()[2 + random.nextInt(4)];
-                            if (random.nextInt(WorldGen.OYSTER_PEARL_CHANCE) == 0) {
-                                oyster.setInventorySlotContents(0, PearlGenHandler.getRandomPearl(random));
+
+                    int blockY = world.getHeightValue(randX, randZ); 
+
+                    if (blockY > 0 && world.blockExists(randX, blockY, randZ)) {
+                        if (MaricultureHandlers.environment.getSalinity(world, randX, randZ) == Salinity.SALINE
+                            && Core.water.canBlockStay(world, randX, blockY, randZ)
+                            && BlockHelper.isWater(world, randX, blockY + 1, randZ)) {
+
+                            world.setBlock(randX, blockY, randZ, Core.water);
+                            TileOyster oyster = (TileOyster) world.getTileEntity(randX, blockY, randZ);
+                            if (oyster != null) {
+                                oyster.orientation = ForgeDirection.values()[2 + random.nextInt(4)];
+                                if (random.nextInt(WorldGen.OYSTER_PEARL_CHANCE) == 0) {
+                                    oyster.setInventorySlotContents(0, PearlGenHandler.getRandomPearl(random));
+                                }
                             }
                         }
                     }
