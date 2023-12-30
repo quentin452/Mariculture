@@ -19,9 +19,10 @@ public class FishMechanics {
     public static boolean FIX_FISH;
     public static double SPEED_MULTIPLIER;
     public static boolean SQUID_DROP_CALAMARI;
+    public static boolean EXTRA_FISH_BREEDING_RECIPES;
     public static boolean ADD_ALCHEMY_RECIPES;
     public static boolean ENABLE_METAL_FISH;
-    
+
     public static void init(Configuration config) {
         setConfig(config);
         setCategory("Settings");
@@ -36,9 +37,10 @@ public class FishMechanics {
         FishMechanics.FIX_FISH = getBoolean("Fix Fish", true, "Will automatically fix any broken fish in a fish feeder. Disable once your fish are fixed. As this can make the fish feeder laggier.");
         FishMechanics.SPEED_MULTIPLIER = getInt("Give me fish NAOW", 50, "Increasing this gives you faster fishing overall, Set to 0 for normal speed");
         FishMechanics.SQUID_DROP_CALAMARI = getBoolean("Squid Drop Calamari", true);
+        FishMechanics.EXTRA_FISH_BREEDING_RECIPES = getBoolean("Extra Fish Breeding Recipes (Whitemargin Stargazer and Perch)", false);
         FishMechanics.ADD_ALCHEMY_RECIPES = getBoolean("Alchemy Recipes", true);
         FishMechanics.ENABLE_METAL_FISH = getBoolean("Enable Metal Fish Breeding", true);
-        
+
         setCategory("Less Fussy Fish");
         FussyFish.IGNORE_ALL_REQUIREMENTS = getBoolean("Ignore All Requirements", false, "Setting this to true, will mean fish will work under any conditions");
         FussyFish.IGNORE_DAY_REQUIREMENTS = getBoolean("Ignore Day Requirements", false, "Fish will work whether it is day or night, no matter their species");
@@ -53,13 +55,13 @@ public class FishMechanics {
         FussyFish.FOOD_USAGE_BOOSTER = getInt("Food Usage Booster", 0, "Increase this to make fish use more food, or a negative number to decrease the amount");
         FussyFish.FERTILITY_BOOSTER = getInt("Fertility Booster", 0, "A higher number means fish will on average lay more eggs.");
     }
-    
+
     public static class FussyFish {
         public static int FOOD_USAGE_BOOSTER;
         public static boolean IGNORE_ALL_REQUIREMENTS;
         public static boolean IGNORE_DIMENSION_REQUIREMENTS;
         public static boolean IGNORE_DAY_REQUIREMENTS;
-        
+
         public static boolean IGNORE_BLOCK_TYPE;
 
         public static int TEMP_TOLERANCE_BOOSTER;

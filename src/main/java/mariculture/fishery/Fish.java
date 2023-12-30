@@ -125,13 +125,13 @@ public class Fish {
     public static FishSpecies salmon; //Shed leather
     public static FishSpecies bass; //Causes explosions
     public static FishSpecies tetra; //Neon lamps
-    public static FishSpecies catfish; //Spawns ocelot 
+    public static FishSpecies catfish; //Spawns ocelot
     public static FishSpecies piranha; //Atacks Entities and players
     public static FishSpecies cod; //Leather (When melted)
     public static FishSpecies perch; //Spawns bats
     public static FishSpecies tuna; //Add Speed Potion
     public static FishSpecies stingRay; //Poisons those in water
-    public static FishSpecies mantaRay; //Regen 2 when eaten, and Heals you when in water 
+    public static FishSpecies mantaRay; //Regen 2 when eaten, and Heals you when in water
     public static FishSpecies electricRay; //Produce 10RF/t per connection lots of power
     public static FishSpecies damsel; //Breeds animals
     public static FishSpecies angel; //Teleport stuff in to inventories
@@ -380,6 +380,11 @@ public class Fish {
         Fishing.mutation.addMutation(manOWar, tuna, puffer, 20D);
         Fishing.mutation.addMutation(salmon, tuna, lung, 22D);
         Fishing.mutation.addMutation(pike, stingRay, mantaRay, 18D);
+        if (FishMechanics.EXTRA_FISH_BREEDING_RECIPES) {
+            Fishing.mutation.addMutation(spider, blaasop, stargazer, 7.5);
+            Fishing.mutation.addMutation(night, blaasop, stargazer, 7.5);
+            Fishing.mutation.addMutation(damsel, gold, perch, 10.0);
+        }
         Fishing.mutation.addMutation(pike, bowfin, piranha, 18D);
         Fishing.mutation.addMutation(puffer, nether, red, 17.5D);
         Fishing.mutation.addMutation(puffer, cod, brown, 17.5D);
