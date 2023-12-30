@@ -98,6 +98,10 @@ public class JewelryHandler {
     }
 
     public static boolean canApply(ItemStack stack) {
+        if (stack == null) {
+            return true;
+        }
+        
         if (Enchantments.DISABLE_BOOKS_ON_PEARLS) {
             if (stack.getItem() == Core.pearls) {
                 return false;
@@ -128,17 +132,17 @@ public class JewelryHandler {
             HashMap<Integer, Integer> newMap = new HashMap();
             List<Integer> existing = new ArrayList();
             int totalAdded = 0;
-            
+
             //Reset all the enchantment data on the result
             result.stackTagCompound.setTag("ench", new NBTTagList());
-            
+
             //Add all the existing enchantments to the new map
             for (Entry<Integer, Integer> i : existingMap.entrySet()) {
                 newMap.put(i.getKey(), i.getValue());
                 existing.add(i.getKey());
                 totalAdded++;
             }
-            
+
             for (int i = 0; i < enchants.length; i++) {
                 //If we are going to add this enchantment, then let's do it
                 if (rand.nextInt(100) < chance) {
@@ -147,7 +151,7 @@ public class JewelryHandler {
                         int id = existing.get(rand.nextInt(existing.size()));
                         newMap.remove(id); //Remove the enchantment at this id
                     }
-                    
+
                     Enchantment enchant = Enchantment.enchantmentsList[enchants[i]];
                     //Adjust the level for this enchantment
                     int levelToAdd = getLevel(type, material, binding, levels[i]);
@@ -155,12 +159,12 @@ public class JewelryHandler {
                     if (levelExisting != 0 && levelExisting < enchant.getMaxLevel() && rand.nextInt(1 + 100 - chance) == 0) { //Attempt to increase the level
                         levelExisting = getLevel(type, material, binding, levelExisting + levelToAdd);
                     } else if (levelExisting == 0) levelExisting = levelToAdd;
-                    
+
                     newMap.put(enchant.effectId, levelExisting);
                     totalAdded++;
                 }
             }
-            
+
             //Now that we have built the map, let's add it to the jewelry
             for (Entry<Integer, Integer> i : newMap.entrySet()) {
                 result.addEnchantment(Enchantment.enchantmentsList[i.getKey()], i.getValue());
