@@ -1,5 +1,7 @@
 package mariculture.fishery;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
 
 import java.util.List;
@@ -27,6 +29,7 @@ import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
 public class EntityHook extends EntityFishHook implements IEntityAdditionalSpawnData {
     private float damage = 0.0F;
     private int baitQuality;
+    public int field_146055_aB;
 
     public EntityHook(World world) {
         super(world);
@@ -41,6 +44,22 @@ public class EntityHook extends EntityFishHook implements IEntityAdditionalSpawn
 
         this.damage = damage;
         baitQuality = quality;
+
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void setPositionAndRotation2(double x, double y, double z, float yaw, float pitch, int rotationIncrements)
+    {
+        this.field_146056_aC = x;
+        this.field_146057_aD = y;
+        this.field_146058_aE = z;
+        this.field_146059_aF = yaw;
+        this.field_146060_aG = pitch;
+        this.field_146055_aB = rotationIncrements;
+        this.motionX = this.field_146061_aH;
+        this.motionY = this.field_146052_aI;
+        this.motionZ = this.field_146053_aJ;
     }
 
     @Override
@@ -254,7 +273,7 @@ public class EntityHook extends EntityFishHook implements IEntityAdditionalSpawn
                             if (FishMechanics.SPEED_MULTIPLIER > 0) {
                                 field_146040_ay -= FishMechanics.SPEED_MULTIPLIER;
                             }
-                            
+
                             field_146040_ay -= k;
                             f1 = 0.15F;
 
