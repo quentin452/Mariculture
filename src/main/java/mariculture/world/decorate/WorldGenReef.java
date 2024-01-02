@@ -14,6 +14,7 @@ import mariculture.world.WorldPlus;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
+import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.gen.feature.WorldGenerator;
 
 public class WorldGenReef extends WorldGenerator {
@@ -32,7 +33,8 @@ public class WorldGenReef extends WorldGenerator {
 
     @Override
     public boolean generate(World world, Random rand, int x, int y, int z) {
-        if (!world.getChunkProvider().chunkExists(x >> 4, z >> 4)) {
+        Chunk chunk = world.getChunkFromChunkCoords(x >> 4, z >> 4);
+        if (!chunk.isChunkLoaded) {
             return false;
         }
 
