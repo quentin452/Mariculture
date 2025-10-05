@@ -132,7 +132,7 @@ public class ItemArmorFishingHat extends ItemMCBaseArmor implements ICaughtAlive
     @Override
     @SideOnly(Side.CLIENT)
     public ModelBiped getArmorModel(EntityLivingBase entityLiving, ItemStack stack, int armorSlot) {
-        return new ModelFishingHat(stack);
+        return ModelFishingHat.getCachedModel(stack);
     }
 
     public int getColor(ItemStack stack) {

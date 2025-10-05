@@ -10,7 +10,12 @@ import net.minecraft.item.ItemStack;
 
 import org.lwjgl.opengl.GL11;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class ModelFishingHat extends ModelBiped {
+    private static final Map<Integer, ModelFishingHat> modelCache = new HashMap<Integer, ModelFishingHat>();
+    
     private ModelRenderer TieLeft;
     private ModelRenderer TieBottom;
     private ModelRenderer Middle;
@@ -19,11 +24,34 @@ public class ModelFishingHat extends ModelBiped {
     private ModelRenderer Bottom;
     private int color = 0x123456;
 
-    public ModelFishingHat(ItemStack stack) {
+    /**
+     * Factory method to get a cached model instance based on the item stack color.
+     * This prevents creating new ModelRenderer objects every frame, which improves performance.
+     */
+    public static ModelFishingHat getCachedModel(ItemStack stack) {
+        int color = 0x123456; // default color
         if (stack.hasTagCompound()) {
             color = Fishery.fishinghat.getColorFromItemStack(stack, 0);
         }
-
+        
+        ModelFishingHat model = modelCache.get(color);
+        if (model == null) {
+            model = new ModelFishingHat(color);
+            modelCache.put(color, model);
+        }
+        return model;
+    }
+    
+    /**
+     * Clears the model cache. Useful for memory management or when textures are reloaded.
+     */
+    public static void clearCache() {
+        modelCache.clear();
+    }
+    
+    private ModelFishingHat(int color) {
+        this.color = color;
+        
         textureWidth = 64;
         textureHeight = 64;
 
@@ -63,6 +91,52 @@ public class ModelFishingHat extends ModelBiped {
         Bottom.setTextureSize(64, 64);
         Bottom.mirror = true;
         setRotation(Bottom, 0F, 0F, 0F);
+        
+        // Pre-compile display lists to avoid runtime compilation
+        precompileDisplayLists();
+    }
+    
+    /**
+     * Pre-compiles the display lists for all model parts to avoid expensive compilation during rendering.
+     * This significantly improves performance by moving the compilation overhead to initialization time.
+     */
+    private void precompileDisplayLists() {
+        // Force compilation of display lists by rendering with a dummy scale
+        // This is safe to do during initialization and prevents runtime compilation
+        // The render() method will automatically compile the display list on first call
+        float dummyScale = 0.0625F; // Standard Minecraft model scale
+        
+        // Temporarily disable rendering to avoid visual artifacts during precompilation
+        GL11.glPushAttrib(GL11.GL_ENABLE_BIT);
+        GL11.glDisable(GL11.GL_LIGHTING);
+        GL11.glDisable(GL11.GL_TEXTURE_2D);
+        GL11.glColorMask(false, false, false, false);
+        GL11.glDepthMask(false);
+        
+        try {
+            // Pre-compile each model part's display list
+            if (TieLeft != null) {
+                TieLeft.render(dummyScale);
+            }
+            if (TieBottom != null) {
+                TieBottom.render(dummyScale);
+            }
+            if (Middle != null) {
+                Middle.render(dummyScale);
+            }
+            if (Top != null) {
+                Top.render(dummyScale);
+            }
+            if (TieRight != null) {
+                TieRight.render(dummyScale);
+            }
+            if (Bottom != null) {
+                Bottom.render(dummyScale);
+            }
+        } finally {
+            // Restore previous OpenGL state
+            GL11.glPopAttrib();
+        }
     }
 
     @Override
